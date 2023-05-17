@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Início{% endblock %}
+
+{% block content %}
+
+
+
+    <!-- Content -->
+    <div class="content">
+        <div class="col text-center mb-4">
+            <h2 class="text-dark">{{ user2.0.customuser.name }}</h2>
+        </div>
+
+        <form method="POST" action="" class="text-center mb-5">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-dark">Enviar</button>
+        </form>
+
+        
+        <div class="container">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="row {% if message.sender == user %}justify-content-end{% else %}justify-content-start{% endif %}">
+                        
+                            <div class="mw-75 mb-3 {% if message.sender == user %}bg-primary text-white{% else %}bg-secondary text-white{% endif %} p-3 rounded">
+                                {{ message.content }}
+                            </div>
+                        
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        
+        
+        
+
+    </div>
+        
+ 
+{% endblock %}
