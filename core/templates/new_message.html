@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Início{% endblock %}
+
+{% block content %}
+
+
+
+    <!-- Content -->
+    <div class="content">
+        <div class="col text-center mb-4">
+            <h2 class="text-dark">{{ user2.0.customuser.name }}</h2>
+        </div>
+
+        <form method="POST" action="" class="text-center mb-5">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-dark">Enviar</button>
+        </form>
+
+{% endblock %}

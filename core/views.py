@@ -83,3 +83,50 @@ def talk(request, user2):
         }
         
         return render(request, 'talk.html', context)
+    
+
+def new_message(request):
+
+    if str(request.method) == 'POST':
+        sender = request.user
+
+        form = MessageForm(request.POST)
+        if form.is_valid():
+            addressee = form.cleaned_data.get('addressee')
+            content = form.cleaned_data.get('content')
+
+            new_message = Message(sender=sender, addressee=addressee, content=content)
+            new_message.save()
+
+            return redirect('talk', user2=addressee)
+
+    else:
+        user = request.user
+        users = User.objects.exclude(pk=user.pk)
+        conversations = []
+
+        for u in users:
+            messages_users = Message.objects.filter(
+                (Q(sender=user) & Q(addressee=u)) | (Q(sender=u) & Q(addressee=user))
+            ).last()
+
+            if messages_users:
+                conversations.append(messages_users)
+
+        sorted_list = sorted(conversations, key=lambda x: x.id, reverse=True)
+    
+
+        context = {
+            'services': Service.objects.all(),
+            'projects': Project.objects.all(),
+            'conversations': sorted_list,
+            'messages_read': Message.objects.filter(Q(addressee=user, read=False)).count(),
+            'user': user,
+
+            'messages': messages_users,
+
+            'form' : NewMessageForm(user=request.user),
+        }
+        
+        return render(request, 'new_message.html', context)
+

@@ -84,6 +84,11 @@ class Message(Base):
     def mark_as_read(self):
         self.read = True
         self.save()
+
+    class Meta:
+        verbose_name = 'Mensagem'
+        verbose_name_plural = 'Mensagens'
+    
     
 
 
